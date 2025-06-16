@@ -44,8 +44,8 @@ Triggers *interactive mode* for the next command:
 
 ## 💬 About ReVo
 
-> ReVo is a war veteran with a broken eye and missing limbs, but full of spirit.  
-> Every keyword unlocks a piece of his story.
+- ReVo is a war veteran with a broken eye and missing limbs, but full of spirit.  
+- Every keyword unlocks a piece of his story.
 
 ---
 
