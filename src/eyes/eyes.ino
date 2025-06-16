@@ -1,9 +1,9 @@
 #include <Adafruit_SSD1306.h>
 #include <splash.h>
 
-#define SCREEN_WIDTH = 128;
-#define SCREEN_HEIGHT = 64;
-#define OLED_RESET = -1;
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET -1
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
@@ -13,10 +13,10 @@ roboEyes roboEyes;
 
 
 void setup(){
-  serial.Begin(9600);
+  Serial.begin(9600);
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)){
-    serialPrintIn(F("Serial allocation failed")
+    Serial.println(F("Serial allocation failed"));
     for(;;);
   }
 
@@ -26,21 +26,30 @@ void setup(){
 
   roboEyes.setIdleMode(ON, 2, 2);
 
-  roboEyes.setWidth(36, 36);
+  roboEyes.setWidth(80, 36);
 
-  roboEyes.setHeight(18, 18);
+  roboEyes.setHeight(28, 18);
 
-}
+  roboEyes.setBorderradius(4, 8); // byte leftEye, byte rightEye
+  roboEyes.setSpacebetween(1); // int space -> can also be negative
 
-  // Define eye shapes, all values in pixels
-  //roboEyes.setBorderradius(8, 8); // byte leftEye, byte rightEye
-  //roboEyes.setSpacebetween(10); // int space -> can also be negative
-
-  // Cyclops mode
-  //roboEyes.setCyclops(ON); // bool on/off -> if turned on, robot has only on eye
+  roboEyes.setCyclops(ON); // bool on/off -> if turned on, robot has only on eye
 
   // Define mood, curiosity and position
-  //roboEyes.setMood(DEFAULT); // mood expressions, can be TIRED, ANGRY, HAPPY, DEFAULT
+  roboEyes.setMood(DEFAULT); // mood expressions, can be TIRED, ANGRY, HAPPY, DEFAULT
+
+  // roboEyes.setPosition(DEFAULT);
+}
+
+  // roboEyes.setBorderradius(8, 8); // byte leftEye, byte rightEye
+  // roboEyes.setSpacebetween(10); // int space -> can also be negative
+
+  // roboEyes.setCyclops(ON); // bool on/off -> if turned on, robot has only on eye
+
+  // // Define mood, curiosity and position
+  // roboEyes.setMood(DEFAULT); // mood expressions, can be TIRED, ANGRY, HAPPY, DEFAULT
+
+
   //roboEyes.setPosition(DEFAULT); // cardinal directions, can be N, NE, E, SE, S, SW, W, NW, DEFAULT (default = horizontally and vertically centered)
   //roboEyes.setCuriosity(ON); // bool on/off -> when turned on, height of the outer eyes increases when moving to the very left or very right
 
