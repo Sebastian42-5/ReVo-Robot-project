@@ -5,15 +5,21 @@
 #define SCREEN_HEIGHT 64
 #define OLED_RESET -1
 
+const int switchPin = 2;
+
+bool lastSwitchState = HIGH;
+int currentMood = -1;
+
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #include <FluxGarage_RoboEyes.h>
 
 roboEyes roboEyes;
 
-
 void setup(){
   Serial.begin(9600);
+
+  pinMode(switchPin, INPUT_PULLUP);
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)){
     Serial.println(F("Serial allocation failed"));
@@ -36,8 +42,6 @@ void setup(){
   roboEyes.setCyclops(ON); // bool on/off -> if turned on, robot has only on eye
 
   // Define mood, curiosity and position
-  roboEyes.setMood(DEFAULT); // mood expressions, can be TIRED, ANGRY, HAPPY, DEFAULT
-
   // roboEyes.setPosition(DEFAULT);
 }
 
@@ -62,5 +66,19 @@ void setup(){
   //roboEyes.anim_laugh(); // laughing - eyes shaking up and down
 
 void loop(){
+  bool currentState = digitalRead(switchPin);
+
+  if(currentState != lastSwitchState){
+    lastSwitchState = currentState;
+
+    if(currentState == LOW && currentMood != HAPPY){
+      roboEyes.setMood(HAPPY); // mood expressions, can be TIRED, ANGRY, HAPPY, DEFAULT
+      currentMood = HAPPY;
+    }
+    else if(currentState == HIGH && currentMood != ANGRY){
+      roboEyes.setMood(ANGRY);
+      currentMood = ANGRY;
+    }
+  }
   roboEyes.update();
 }

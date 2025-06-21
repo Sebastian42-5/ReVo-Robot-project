@@ -64,3 +64,4 @@ What I did for the rest of the day was to write this journal and test the toggle
 
 ## June 20th 
 
+Today, it was mostly about testing different sketches for ReVo's eyes and toggle switch. I also experimented using a HC-SR04 sensor for ReVo to become happy when I wave at him close enough. The testing worked and I'll most likely upload the sketch into his actual eye. I also got more familiar with the toggle switch that I will use to simply turn ReVo on and off if needed. I also started working on the esthetics of ReVo, starting to cut clothing for him. I am still waiting for the good SD card and the Voice Recognition Module V3 to arrive and to acquire a muiltimeter to test the accurancy of the UBEC 5V regulator, so that is why less progress was done today. 
