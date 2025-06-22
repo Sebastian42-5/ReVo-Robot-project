@@ -1,0 +1,248 @@
+<?xml version= "1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:property name = "body height" value = "4.2"/>
+    <xacro:property name="ixx"/>
+    <xacro:property name="iyy"/>
+    <xacro:property name="izz"/>
+    <xacro:property name = "base_width" value = "4.5"/>
+    <xacro:property name = "base_height" value = "1.21"/>
+    <xacro:property/>
+    <xacro:property/>
+
+    <link name = "arm">
+        <visual>
+            <geometry>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+            <material name= "color_name"/>
+                <color rgba = "r g b a"/>
+            <material/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <mesh>
+                </mesh>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+        </collision>
+
+        <inertial>
+            <mass value= "mass_value_in_kg"/>
+            <inertia
+                ixx = "ixx" ixy = "ixy" ixz = "ixz"
+                iyy = "iyy" iyz = "iyz"
+                izz = "izz"/>
+        </inertial>
+    </link>
+    <link name = "head">
+        <visual>
+            <geometry>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+            <material name= "color_name"/>
+                <color rgba = "r g b a"/>
+            <material/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <mesh>
+                </mesh>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+        </collision>
+
+        <inertial>
+            <mass value= "mass_value_in_kg"/>
+            <inertia
+                ixx = "ixx" ixy = "ixy" ixz = "ixz"
+                iyy = "iyy" iyz = "iyz"
+                izz = "izz"/>
+        </inertial>
+    </link>
+    <link name = "body">
+        <visual>
+            <geometry>
+                <mesh>
+                </mesh>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+            <material name= "color_name"/>
+                <color rgba = "r g b a"/>
+            <material/>
+        </visual>
+
+        <collision>
+            <geometry>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+        </collision>
+
+        <inertial>
+            <mass value= "mass_value_in_kg"/>
+            <inertia
+                ixx = "ixx" ixy = "ixy" ixz = "ixz"
+                iyy = "iyy" iyz = "iyz"
+                izz = "izz"/>
+        </inertial>
+    </link>
+
+    <link name = "ear">
+        <visual>
+            <geometry>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+            <material name= "color_name"/>
+                <color rgba = "r g b a"/>
+            <material/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <mesh>
+                </mesh>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+        </collision>
+
+        <inertial>
+            <mass value= "mass_value_in_kg"/>
+            <inertia
+                ixx = "ixx" ixy = "ixy" ixz = "ixz"
+                iyy = "iyy" iyz = "iyz"
+                izz = "izz"/>
+        </inertial>
+    </link>
+
+    <link name = "cylinder_neck">
+         <visual>
+            <geometry>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+            <material name= "color_name"/>
+                <color rgba = "0 1 1 0"/>
+            <material/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <mesh>
+                </mesh>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+        </collision>
+
+        <inertial>
+            <mass value= "mass_value_in_kg"/>
+            <inertia
+                ixx = "ixx" ixy = "ixy" ixz = "ixz"
+                iyy = "iyy" iyz = "iyz"
+                izz = "izz"/>
+        </inertial>
+    </link>
+
+    <link name = "base_cylinder">
+           <visual>
+            <geometry>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+            <material name= "color_name"/>
+                <color rgba = "r g b a"/>
+            <material/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <mesh>
+                </mesh>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+        </collision>
+
+        <inertial>
+            <mass value= "mass_value_in_kg"/>
+            <inertia
+                ixx = "ixx" ixy = "ixy" ixz = "ixz"
+                iyy = "iyy" iyz = "iyz"
+                izz = "izz"/>
+        </inertial>
+    </link>
+    
+    <link name = "base">
+        <visual>
+            <geometry>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+            <material name= "color_name"/>
+                <color rgba = "r g b a"/>
+            <material/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size ="${base_width} ${base_height} 3.5"/>
+            </geometry>
+            <origin rpy= "r p y" xyz = "x y z"/>
+        </collision>
+
+        <inertial>
+            <mass value= "mass_value_in_kg"/>
+            <inertia
+                ixx = "ixx" ixy = "ixy" ixz = "ixz"
+                iyy = "iyy" iyz = "iyz"
+                izz = "izz"/>
+        </inertial>
+    </link>
+
+    <joint name = "head_to_neck">
+        <parent link= "parent_link_name"/>
+        <child link= "child_link_name"/>
+        <origin rpy= "r p y" xyz= "x y z"/>
+        <axis rpy= "r p y" xyz= "x y z"/>
+        <limit lower= "lower" upper= "upper"
+effort= "max_effort" velocity= "max_vel"/>
+        <dynamics damping= "damping_coeff" friction= "fric_coeff"/>
+    </joint>
+
+    <joint name = "neck_to_body">
+        <parent link= "parent_link_name"/>
+        <child link= "child_link_name"/>
+        <origin rpy= "r p y" xyz= "x y z"/>
+        <axis rpy= "r p y" xyz= "x y z"/>
+        <limit lower= "lower" upper= "upper"
+effort= "max_effort" velocity= "max_vel"/>
+        <dynamics damping= "damping_coeff" friction= "fric_coeff"/>
+    </joint>
+
+    <joint name = "arm_to_body">
+        <parent link= "parent_link_name"/>
+        <child link= "child_link_name"/>
+        <origin rpy= "r p y" xyz= "x y z"/>
+        <axis rpy= "r p y" xyz= "x y z"/>
+        <limit lower= "lower" upper= "upper"
+effort= "max_effort" velocity= "max_vel"/>
+        <dynamics damping= "damping_coeff" friction= "fric_coeff"/>
+    </joint>
+
+    <joint name = "body_to_base">
+        <parent link= "base"/>
+        <child link= "body"/>
+        <origin rpy= "r p y" xyz= "x y z"/>
+        <axis rpy= "r p y" xyz= "x y z"/>
+        <limit lower= "lower" upper= "upper"
+effort= "max_effort" velocity= "max_vel"/>
+        <dynamics damping= "damping_coeff" friction= "fric_coeff"/>
+    </joint>
+
+    <joint name = "ear_to_head">
+        <parent link= "parent_link_name"/>
+        <child link= "child_link_name"/>
+        <origin rpy= "r p y" xyz= "x y z"/>
+        <axis rpy= "r p y" xyz= "x y z"/>
+        <limit lower= "lower" upper= "upper"
+effort= "max_effort" velocity= "max_vel"/>
+        <dynamics damping= "damping_coeff" friction= "fric_coeff"/>
+    </joint>
+
+</robot>
