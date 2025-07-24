@@ -1,7 +1,7 @@
 # 🤖 ReVo – The War Veteran Companion Robot
 
 **ReVo** is a battle-worn yet lively robotic companion, crafted with interactive hardware and a rich personality.  
-With a serious OLED-screen eye, expressive servo-powered features, and voice interaction, ReVo is always ready to share his stories and be your trusty robotic friend.
+With a serious OLED-screen eye, expressive servo-powered features, and voice interaction, ReVo is always ready to share his stories and be your trusty veteran friend.
 
 ---
 
