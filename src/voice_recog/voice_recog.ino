@@ -1,35 +1,56 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
-#include <U8g2lib.h>
-#include <MUIU8g2.h>
+// #include <U8g2lib.h>
+// #include <MUIU8g2.h>
 #include <DHT.h>
 #include <DHT_U.h>
 #include <VoiceRecognitionV3.h>
 #include <Servo.h>
+#include <Adafruit_SSD1306.h>
 
 
 // DFRobotDFPlayerMini myDFPlayer;
 VR myVR(2, 3);
-Servo myServo;
-int pos = 0;
+// Servo myServo;
 
-U8G2_SSD1306_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
+// int pos = 0;
 
-#define DHTPIN 2
-
+#define DHTPIN 6
 #define DHTTYPE DHT11
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET -1
 
 DHT dht(DHTPIN, DHTTYPE, 6);
 
+bool showingData = true;
+unsigned long showDataUntil = 0;
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+#include <FluxGarage_RoboEyes.h>
+
+roboEyes roboEyes;
 
 void setup() {
   // put your setup code here, to run once:
   // MySoftwareSerial.begin(9600);
   Serial.begin(115200);
-  myServo.attach(10);
+  // myServo.attach(10);
 
   dht.begin();
-  u8g2.begin();
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println(F("Display allocation failed"));
+    while (true);
+  }
+
+  // u8g2.firstPage();
+  // do {
+  //   u8g2.setFont(u8g2_font_6x10_tf);
+  //   u8g2.drawStr(10, 30, "System Ready");
+  // } while (u8g2.nextPage());
+  // delay(1000);
 
   // Serial.println("Trying to connect to the DFPlayer...");
 
@@ -47,6 +68,21 @@ void setup() {
 
   // myDFPlayer.EQ(DFPLAYER_EQ_NORMAL);
   // myDFPlayer.volume(25);
+
+  roboEyes.begin(SCREEN_WIDTH, SCREEN_HEIGHT, 100);
+
+  roboEyes.setAutoblinker(ON, 3, 2);
+
+  roboEyes.setIdleMode(ON, 2, 2);
+
+  roboEyes.setWidth(80, 36);
+
+  roboEyes.setHeight(28, 18);
+
+  roboEyes.setBorderradius(4, 8); // byte leftEye, byte rightEye
+  roboEyes.setSpacebetween(1); // int space -> can also be negative
+
+  roboEyes.setCyclops(ON);
 
   myVR.begin(9600);
   Serial.println("VoiceRecognitionModule initialized.");
@@ -70,6 +106,18 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
+  if(showingData && millis() < showDataUntil){
+    return;
+  }
+  if(showingData && millis() >= showDataUntil){
+    display.clearDisplay();
+    roboEyes.setMood(DEFAULT);
+    showingData = false;
+  }
+  if(!showingData){
+    roboEyes.update();
+  }
+
   uint8_t records[7];
   uint8_t buf[64];
 
@@ -77,6 +125,12 @@ void loop() {
 
   float h = dht.readHumidity();
   float t = dht.readTemperature();
+
+  Serial.println("Temperature: "); 
+  Serial.println(t);
+
+  Serial.println("Humidity: ");
+  Serial.println(h);
 
   if(ret > 0){
     uint8_t command = buf[1];
@@ -87,37 +141,51 @@ void loop() {
       Serial.println("Recieved");
       // Serial.println("Playing 001.mp3");
       // myDFPlayer.play(1);
-      for(int pos = 0; pos <= 30; pos+=2){
-        myServo.write(pos);
-        delay(40);
-      }
-      for(int pos = 30; pos > 0; pos-=2){
-        myServo.write(pos);
-        delay(40);
-      }
+
+      // for(int pos = 0; pos <= 30; pos+=2){
+      //   myServo.write(pos);
+      //   delay(40);
+      // }
+      // for(int pos = 30; pos > 0; pos-=2){
+      //   myServo.write(pos);
+      //   delay(40);
+      // }
 
       if(isnan(h) || isnan(t)){
-        u8g2.clearBuffer();
-        u8g2.setFont(u8g2_font_6x10_tf);
-        u8g2.drawStr(10, 30, "Sensor error!");
-        u8g2.sendBuffer();
+        display.clearDisplay();
+        display.setTextSize(1);
+        display.setTextColor(SSD1306_WHITE);
+        display.setCursor(10, 30);
+        display.println("Sensor error!");
+        display.display();
         delay(2000);
         return;
       }
 
-      char tempBuffer[16];
-      char humBuffer[16];
+      char tempStr[16];
+      char humStr[16];
 
-      snprintf(tempBuffer, sizeof(tempBuffer), "Temp: %.1f C", t);
-      snprintf(humBuffer, sizeof(humBuffer), "Hum:  %.1f %%", h);
+      dtostrf(t, 4, 1, tempStr);  // (float, width, decimals, target buffer)
+      dtostrf(h, 4, 1, humStr);
 
-      u8g2.firstPage();
-      do{             
-        u8g2.setFont(u8g2_font_6x10_tf);  
-        u8g2.drawStr(10, 20, tempBuffer);    
-        u8g2.drawStr(10, 40, humBuffer);                      
-      }while (u8g2.nextPage());
-      delay(2000);
+      display.clearDisplay();
+      display.setTextSize(1);
+      display.setTextColor(SSD1306_WHITE);
+      display.setCursor(10, 20);
+      display.print("Temp: ");
+      display.print(tempStr);
+      display.println(" C");
+
+      display.setCursor(10, 40);
+      display.print("Hum:  ");
+      display.print(humStr);
+      display.println(" %");
+
+      display.display();
+
+      roboEyes.setMood(HAPPY);
+      showingData = true;
+      showDataUntil = millis() + 4000;
     }
   }
 }
